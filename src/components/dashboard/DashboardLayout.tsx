@@ -34,6 +34,7 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useToast } from "@/components/ui/use-toast";
+import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { cn } from "@/lib/utils";
 
 const DashboardLayout = () => {
@@ -119,13 +120,11 @@ const DashboardLayout = () => {
   const SidebarContent = () => (
     <div className="flex flex-col h-full">
       {/* Logo */}
-      <div className="flex items-center space-x-2 p-6 border-b border-white/10">
-        <div className="w-8 h-8 bg-gradient-to-r from-purple-600 to-blue-600 rounded-lg flex items-center justify-center">
+      <div className="flex items-center space-x-2 p-6 border-b border-border/50">
+        <div className="w-8 h-8 gradient-primary rounded-lg flex items-center justify-center shadow-lg">
           <Bot className="h-5 w-5 text-white" />
         </div>
-        <span className="text-xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
-          Murakib
-        </span>
+        <span className="text-xl font-bold text-gradient">Murakib</span>
       </div>
 
       {/* Navigation */}
@@ -138,19 +137,19 @@ const DashboardLayout = () => {
               to={item.href}
               onClick={() => setIsSidebarOpen(false)}
               className={cn(
-                "flex items-center justify-between px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 group",
+                "flex items-center justify-between px-3 py-3 rounded-xl text-sm font-medium transition-all duration-300 group relative overflow-hidden",
                 item.current
-                  ? "bg-gradient-to-r from-purple-600/20 to-blue-600/20 text-purple-700 border border-purple-200/50"
-                  : "text-gray-600 hover:text-gray-900 hover:bg-gray-100/80",
+                  ? "bg-primary/10 text-primary border border-primary/20 shadow-lg"
+                  : "text-muted-foreground hover:text-foreground hover:bg-accent/50",
               )}
             >
               <div className="flex items-center space-x-3">
                 <Icon
                   className={cn(
-                    "h-5 w-5 transition-colors",
+                    "h-5 w-5 transition-all duration-300",
                     item.current
-                      ? "text-purple-600"
-                      : "text-gray-400 group-hover:text-gray-600",
+                      ? "text-primary scale-110"
+                      : "text-muted-foreground group-hover:text-foreground group-hover:scale-105",
                   )}
                 />
                 <span>{item.name}</span>
@@ -158,7 +157,7 @@ const DashboardLayout = () => {
               {item.badge && (
                 <Badge
                   variant="secondary"
-                  className="text-xs bg-purple-100 text-purple-700"
+                  className="text-xs bg-primary/10 text-primary border-primary/20 animate-pulse"
                 >
                   {item.badge}
                 </Badge>
@@ -169,20 +168,29 @@ const DashboardLayout = () => {
       </nav>
 
       {/* User Section */}
-      <div className="p-4 border-t border-gray-200">
+      <div className="p-4 border-t border-border/50">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="w-full justify-start p-2 h-auto">
+            <Button
+              variant="ghost"
+              className="w-full justify-start p-3 h-auto rounded-xl hover:bg-accent/50 transition-all duration-300"
+            >
               <div className="flex items-center space-x-3">
-                <Avatar className="h-8 w-8">
+                <Avatar className="h-9 w-9 ring-2 ring-primary/20">
                   <AvatarImage src="https://api.dicebear.com/7.x/avataaars/svg?seed=demo" />
-                  <AvatarFallback>DU</AvatarFallback>
+                  <AvatarFallback className="bg-primary/10 text-primary font-semibold">
+                    DU
+                  </AvatarFallback>
                 </Avatar>
                 <div className="flex-1 text-left">
-                  <p className="text-sm font-medium">Demo User</p>
-                  <p className="text-xs text-gray-500">demo@murakib.com</p>
+                  <p className="text-sm font-medium text-foreground">
+                    Demo User
+                  </p>
+                  <p className="text-xs text-muted-foreground">
+                    demo@murakib.com
+                  </p>
                 </div>
-                <ChevronDown className="h-4 w-4 text-gray-400" />
+                <ChevronDown className="h-4 w-4 text-muted-foreground transition-transform duration-300 group-hover:rotate-180" />
               </div>
             </Button>
           </DropdownMenuTrigger>
@@ -209,20 +217,17 @@ const DashboardLayout = () => {
   );
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-purple-50">
+    <div className="min-h-screen gradient-bg">
       {/* Desktop Sidebar */}
       <div className="hidden lg:fixed lg:inset-y-0 lg:flex lg:w-72 lg:flex-col">
-        <div className="flex flex-col flex-grow bg-white/80 backdrop-blur-xl border-r border-white/20 shadow-xl">
+        <div className="flex flex-col flex-grow glass border-r border-border/20 shadow-2xl">
           <SidebarContent />
         </div>
       </div>
 
       {/* Mobile Sidebar */}
       <Sheet open={isSidebarOpen} onOpenChange={setIsSidebarOpen}>
-        <SheetContent
-          side="left"
-          className="p-0 w-72 bg-white/95 backdrop-blur-xl"
-        >
+        <SheetContent side="left" className="p-0 w-72 glass">
           <SidebarContent />
         </SheetContent>
       </Sheet>
@@ -230,39 +235,47 @@ const DashboardLayout = () => {
       {/* Main Content */}
       <div className="lg:pl-72">
         {/* Top Header */}
-        <header className="sticky top-0 z-40 bg-white/80 backdrop-blur-xl border-b border-white/20 shadow-sm">
+        <header className="sticky top-0 z-40 glass border-b border-border/20 shadow-lg">
           <div className="flex items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
             <div className="flex items-center space-x-4">
               {/* Mobile menu button */}
               <Sheet>
                 <SheetTrigger asChild>
-                  <Button variant="ghost" size="icon" className="lg:hidden">
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="lg:hidden hover:bg-accent/50"
+                  >
                     <Menu className="h-5 w-5" />
                   </Button>
                 </SheetTrigger>
-                <SheetContent
-                  side="left"
-                  className="p-0 w-72 bg-white/95 backdrop-blur-xl"
-                >
+                <SheetContent side="left" className="p-0 w-72 glass">
                   <SidebarContent />
                 </SheetContent>
               </Sheet>
 
               {/* Search */}
               <div className="relative hidden sm:block">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                 <Input
                   placeholder="Search..."
-                  className="pl-10 w-64 bg-white/60 border-white/20"
+                  className="pl-10 w-64 bg-background/60 border-border/40 focus:border-primary/40 transition-all duration-300"
                 />
               </div>
             </div>
 
             <div className="flex items-center space-x-4">
+              {/* Theme Toggle */}
+              <ThemeToggle />
+
               {/* Notifications */}
-              <Button variant="ghost" size="icon" className="relative">
+              <Button
+                variant="ghost"
+                size="icon"
+                className="relative hover:bg-accent/50 transition-all duration-300"
+              >
                 <Bell className="h-5 w-5" />
-                <span className="absolute -top-1 -right-1 h-3 w-3 bg-red-500 rounded-full" />
+                <span className="absolute -top-1 -right-1 h-3 w-3 bg-destructive rounded-full animate-pulse" />
               </Button>
 
               {/* User Menu */}
@@ -270,11 +283,13 @@ const DashboardLayout = () => {
                 <DropdownMenuTrigger asChild>
                   <Button
                     variant="ghost"
-                    className="relative h-8 w-8 rounded-full"
+                    className="relative h-9 w-9 rounded-full hover:bg-accent/50 transition-all duration-300"
                   >
-                    <Avatar className="h-8 w-8">
+                    <Avatar className="h-9 w-9 ring-2 ring-primary/20">
                       <AvatarImage src="https://api.dicebear.com/7.x/avataaars/svg?seed=demo" />
-                      <AvatarFallback>DU</AvatarFallback>
+                      <AvatarFallback className="bg-primary/10 text-primary font-semibold">
+                        DU
+                      </AvatarFallback>
                     </Avatar>
                   </Button>
                 </DropdownMenuTrigger>
@@ -311,11 +326,12 @@ const DashboardLayout = () => {
 
         {/* Page Content */}
         <main className="flex-1">
-          <div className="px-4 py-6 sm:px-6 lg:px-8">
+          <div className="bg-background min-h-screen">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
+              transition={{ duration: 0.5, ease: "easeOut" }}
+              className="animate-fade-in px-4 py-6 sm:px-6 lg:px-8 max-w-none"
             >
               <Outlet />
             </motion.div>

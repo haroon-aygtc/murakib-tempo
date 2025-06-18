@@ -120,12 +120,14 @@ function App() {
   ];
 
   return (
-    <div className="space-y-6 bg-white min-h-screen">
+    <div className="space-y-8 w-full">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Deploy Assistant</h1>
-          <p className="text-gray-600 mt-1">
+          <h1 className="text-3xl font-bold text-foreground">
+            Deploy Assistant
+          </h1>
+          <p className="text-muted-foreground mt-1">
             Deploy your AI assistant to production and start helping users
           </p>
         </div>
@@ -173,13 +175,13 @@ function App() {
                   <AlertCircle className="h-6 w-6 text-red-600" />
                 )}
                 <div>
-                  <h3 className="font-medium text-blue-900">
+                  <h3 className="font-medium text-primary">
                     {deploymentStatus === "deploying" &&
                       "Deployment in Progress"}
                     {deploymentStatus === "success" && "Deployment Successful"}
                     {deploymentStatus === "error" && "Deployment Failed"}
                   </h3>
-                  <p className="text-sm text-blue-700">
+                  <p className="text-sm text-primary/80">
                     {deploymentStatus === "deploying" &&
                       "Please wait while we deploy your assistant..."}
                     {deploymentStatus === "success" &&
@@ -200,7 +202,9 @@ function App() {
                       )}
                       <span
                         className={`text-sm ${
-                          step.completed ? "text-green-700" : "text-gray-600"
+                          step.completed
+                            ? "text-green-600"
+                            : "text-muted-foreground"
                         }`}
                       >
                         {step.step}
@@ -210,11 +214,11 @@ function App() {
                 </div>
               )}
               {deploymentStatus === "success" && (
-                <div className="mt-4 p-3 bg-white rounded-lg border">
+                <div className="mt-4 p-3 bg-card rounded-lg border">
                   <div className="flex items-center justify-between">
                     <span className="text-sm font-medium">Live URL:</span>
                     <div className="flex items-center space-x-2">
-                      <code className="text-sm bg-gray-100 px-2 py-1 rounded">
+                      <code className="text-sm bg-muted px-2 py-1 rounded">
                         https://{deploymentConfig.subdomain}.murakib.app
                       </code>
                       <Button variant="ghost" size="sm">
@@ -229,9 +233,9 @@ function App() {
         </motion.div>
       )}
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 xl:grid-cols-3 gap-8 w-full">
         {/* Deployment Configuration */}
-        <div className="lg:col-span-2 space-y-6">
+        <div className="xl:col-span-2 space-y-6 w-full">
           <Tabs defaultValue="config" className="space-y-4">
             <TabsList className="grid w-full grid-cols-3">
               <TabsTrigger value="config">Configuration</TabsTrigger>
@@ -262,7 +266,7 @@ function App() {
                             })
                           }
                         />
-                        <span className="text-sm text-gray-500">
+                        <span className="text-sm text-muted-foreground">
                           .murakib.app
                         </span>
                       </div>
@@ -428,7 +432,7 @@ function App() {
                       }
                       rows={4}
                     />
-                    <p className="text-sm text-gray-500">
+                    <p className="text-sm text-muted-foreground">
                       Enter one domain per line. Use * for wildcards. Leave
                       empty to allow all domains.
                     </p>
@@ -449,7 +453,7 @@ function App() {
                       />
                       <Button variant="outline">Configure</Button>
                     </div>
-                    <p className="text-sm text-gray-500">
+                    <p className="text-sm text-muted-foreground">
                       Use your own domain for the assistant. Requires Pro plan.
                     </p>
                   </div>
@@ -467,7 +471,7 @@ function App() {
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="flex items-center justify-between">
-                <span className="text-sm text-gray-600">Status:</span>
+                <span className="text-sm text-muted-foreground">Status:</span>
                 <Badge
                   variant={
                     deploymentStatus === "success"
@@ -484,19 +488,25 @@ function App() {
                 </Badge>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-sm text-gray-600">Environment:</span>
+                <span className="text-sm text-muted-foreground">
+                  Environment:
+                </span>
                 <span className="text-sm font-medium capitalize">
                   {deploymentConfig.environment}
                 </span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-sm text-gray-600">Last Deploy:</span>
+                <span className="text-sm text-muted-foreground">
+                  Last Deploy:
+                </span>
                 <span className="text-sm font-medium">
                   {deploymentStatus === "success" ? "Just now" : "Never"}
                 </span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-sm text-gray-600">Auto Updates:</span>
+                <span className="text-sm text-muted-foreground">
+                  Auto Updates:
+                </span>
                 <span className="text-sm font-medium">
                   {deploymentConfig.autoUpdates ? "Enabled" : "Disabled"}
                 </span>

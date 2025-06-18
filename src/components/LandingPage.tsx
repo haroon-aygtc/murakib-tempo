@@ -17,6 +17,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { ThemeToggle } from "@/components/ui/theme-toggle";
 
 const LandingPage = () => {
   const features = [
@@ -136,42 +137,46 @@ const LandingPage = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-purple-50">
+    <div className="min-h-screen gradient-bg">
       {/* Navigation */}
-      <nav className="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-md border-b border-white/20">
+      <nav className="fixed top-0 w-full z-50 glass border-b border-white/20 dark:border-gray-800/20">
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
           <div className="flex items-center space-x-2">
-            <div className="w-8 h-8 bg-gradient-to-r from-purple-600 to-blue-600 rounded-lg flex items-center justify-center">
+            <div className="w-8 h-8 gradient-primary rounded-lg flex items-center justify-center shadow-lg">
               <Bot className="h-5 w-5 text-white" />
             </div>
-            <span className="text-xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
-              Murakib
-            </span>
+            <span className="text-xl font-bold text-gradient">Murakib</span>
           </div>
           <div className="hidden md:flex items-center space-x-8">
             <a
               href="#features"
-              className="text-gray-600 hover:text-gray-900 transition-colors"
+              className="text-muted-foreground hover:text-foreground transition-colors font-medium"
             >
               Features
             </a>
             <a
               href="#pricing"
-              className="text-gray-600 hover:text-gray-900 transition-colors"
+              className="text-muted-foreground hover:text-foreground transition-colors font-medium"
             >
               Pricing
             </a>
             <a
               href="#testimonials"
-              className="text-gray-600 hover:text-gray-900 transition-colors"
+              className="text-muted-foreground hover:text-foreground transition-colors font-medium"
             >
               Testimonials
             </a>
+            <ThemeToggle />
             <Link to="/demo">
-              <Button variant="outline">Demo</Button>
+              <Button
+                variant="outline"
+                className="border-primary/20 hover:border-primary/40"
+              >
+                Demo
+              </Button>
             </Link>
             <Link to="/auth/login">
-              <Button>Get Started</Button>
+              <Button className="btn-gradient">Get Started</Button>
             </Link>
           </div>
         </div>
@@ -185,31 +190,32 @@ const LandingPage = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
-            <Badge className="mb-4 bg-purple-100 text-purple-700 border-purple-200">
+            <Badge className="mb-4 bg-primary/10 text-primary border-primary/20 shadow-lg">
               🚀 Now with Advanced Voice AI
             </Badge>
-            <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-purple-600 via-blue-600 to-teal-600 bg-clip-text text-transparent">
+            <h1 className="text-5xl md:text-7xl font-bold mb-6 text-gradient animate-fade-in">
               Eliminate Digital
               <br />
               Friction Forever
             </h1>
-            <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto leading-relaxed">
+            <p className="text-xl text-muted-foreground mb-8 max-w-3xl mx-auto leading-relaxed">
               Murakib's AI assistant provides real-time guidance, multilingual
               support, and voice interaction to transform how users complete
               forms and navigate digital experiences.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
               <Link to="/auth/register">
-                <Button
-                  size="lg"
-                  className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700"
-                >
+                <Button size="lg" className="btn-gradient">
                   Start Free Trial
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
               </Link>
               <Link to="/demo">
-                <Button size="lg" variant="outline">
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="border-primary/20 hover:border-primary/40 hover:bg-primary/5"
+                >
                   View Live Demo
                 </Button>
               </Link>
@@ -222,8 +228,10 @@ const LandingPage = () => {
       <section id="features" className="py-20 px-4">
         <div className="container mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold mb-4">Powerful Features</h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+            <h2 className="text-4xl font-bold mb-4 text-gradient">
+              Powerful Features
+            </h2>
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
               Everything you need to create intelligent, accessible, and
               multilingual user experiences.
             </p>
@@ -237,15 +245,19 @@ const LandingPage = () => {
                 transition={{ duration: 0.5, delay: index * 0.1 }}
                 viewport={{ once: true }}
               >
-                <Card className="h-full bg-white/60 backdrop-blur-sm border-white/20 hover:bg-white/80 transition-all duration-300">
+                <Card className="h-full glass-card card-hover">
                   <CardHeader>
-                    <div className="w-12 h-12 bg-gradient-to-r from-purple-600 to-blue-600 rounded-lg flex items-center justify-center mb-4">
+                    <div className="w-12 h-12 gradient-primary rounded-lg flex items-center justify-center mb-4 shadow-lg">
                       <feature.icon className="h-6 w-6 text-white" />
                     </div>
-                    <CardTitle className="text-xl">{feature.title}</CardTitle>
+                    <CardTitle className="text-xl text-foreground">
+                      {feature.title}
+                    </CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <p className="text-gray-600">{feature.description}</p>
+                    <p className="text-muted-foreground">
+                      {feature.description}
+                    </p>
                   </CardContent>
                 </Card>
               </motion.div>

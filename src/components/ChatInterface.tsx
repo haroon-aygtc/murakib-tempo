@@ -19,6 +19,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import LanguageSelector from "@/components/LanguageSelector";
 import {
   Select,
   SelectContent,
@@ -463,28 +464,13 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
       {/* Controls Area */}
       <div className="p-3 border-t">
         <div className="flex justify-between mb-2">
-          <Select value={activeLanguage} onValueChange={handleLanguageChange}>
-            <SelectTrigger className="w-[120px] h-8">
-              <SelectValue placeholder="Language" />
-            </SelectTrigger>
-            <SelectContent>
-              {languages.map((lang) => {
-                const languageNames: Record<string, string> = {
-                  en: "English",
-                  ar: "العربية",
-                  fr: "Français",
-                  es: "Español",
-                  zh: "中文",
-                  de: "Deutsch",
-                };
-                return (
-                  <SelectItem key={lang} value={lang}>
-                    {languageNames[lang] || lang.toUpperCase()}
-                  </SelectItem>
-                );
-              })}
-            </SelectContent>
-          </Select>
+          <LanguageSelector
+            selectedLanguage={activeLanguage}
+            onLanguageChange={handleLanguageChange}
+            supportedLanguages={languages}
+            variant="compact"
+            className="w-[120px] h-8"
+          />
 
           <div className="flex space-x-1">
             <TooltipProvider>

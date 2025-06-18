@@ -39,58 +39,35 @@ import { Slider } from "@/components/ui/slider";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useToast } from "@/components/ui/use-toast";
+import AIAssistantWidget from "@/components/AIAssistantWidget";
+import { useWidgetConfig } from "@/contexts/WidgetConfigContext";
+import AIProviderConfig from "@/components/dashboard/AIProviderConfig";
+import LivePreview from "@/components/dashboard/LivePreview";
+import LanguageSelector from "@/components/LanguageSelector";
 
 const WidgetBuilder = () => {
   const { toast } = useToast();
-  const [widgetConfig, setWidgetConfig] = useState({
-    name: "Customer Support Assistant",
-    description: "Helps customers with inquiries and support",
-    avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=assistant",
-    primaryColor: "#8B5CF6",
-    secondaryColor: "#3B82F6",
-    position: "bottom-right",
-    size: "medium",
-    language: "en",
-    voiceEnabled: true,
-    voiceModel: "elevenlabs-nova",
-    chatEnabled: true,
-    formGuidanceEnabled: true,
-    highlightMode: "subtle",
-    welcomeMessage: "Hi! I'm here to help you. How can I assist you today?",
-    personality: "friendly",
-    responseDelay: 1000,
-  });
+  const { config, updateConfig, resetConfig, saveConfig, isLoading, isDirty } =
+    useWidgetConfig();
 
-  const handleConfigChange = (key: string, value: any) => {
-    setWidgetConfig((prev) => ({ ...prev, [key]: value }));
-  };
-
-  const handleSave = () => {
-    toast({
-      title: "Success",
-      description: "Widget configuration saved successfully",
-    });
+  const handleSave = async () => {
+    try {
+      await saveConfig();
+      toast({
+        title: "Success",
+        description: "Widget configuration saved successfully",
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to save widget configuration",
+        variant: "destructive",
+      });
+    }
   };
 
   const handleReset = () => {
-    setWidgetConfig({
-      name: "Customer Support Assistant",
-      description: "Helps customers with inquiries and support",
-      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=assistant",
-      primaryColor: "#8B5CF6",
-      secondaryColor: "#3B82F6",
-      position: "bottom-right",
-      size: "medium",
-      language: "en",
-      voiceEnabled: true,
-      voiceModel: "elevenlabs-nova",
-      chatEnabled: true,
-      formGuidanceEnabled: true,
-      highlightMode: "subtle",
-      welcomeMessage: "Hi! I'm here to help you. How can I assist you today?",
-      personality: "friendly",
-      responseDelay: 1000,
-    });
+    resetConfig();
     toast({
       title: "Reset Complete",
       description: "Widget configuration has been reset to defaults",
@@ -98,17 +75,17 @@ const WidgetBuilder = () => {
   };
 
   return (
-    <div className="space-y-6 bg-white min-h-screen">
+    <div className="space-y-8 w-full">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Widget Builder</h1>
-          <p className="text-gray-600 mt-1">
+          <h1 className="text-3xl font-bold text-foreground">Widget Builder</h1>
+          <p className="text-muted-foreground mt-1">
             Customize your AI assistant widget appearance and behavior
           </p>
         </div>
         <div className="flex items-center space-x-2">
-          <Button variant="outline" onClick={handleReset}>
+          <Button variant="outline" onClick={handleReset} disabled={isLoading}>
             <RotateCcw className="h-4 w-4 mr-2" />
             Reset
           </Button>
@@ -118,19 +95,20 @@ const WidgetBuilder = () => {
           </Button>
           <Button
             onClick={handleSave}
+            disabled={isLoading || !isDirty}
             className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700"
           >
             <Save className="h-4 w-4 mr-2" />
-            Save Changes
+            {isLoading ? "Saving..." : "Save Changes"}
           </Button>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 xl:grid-cols-3 gap-8 w-full">
         {/* Configuration Panel */}
-        <div className="lg:col-span-2 space-y-6">
+        <div className="xl:col-span-2 space-y-6 w-full">
           <Tabs defaultValue="appearance" className="space-y-4">
-            <TabsList className="grid w-full grid-cols-4">
+            <TabsList className="grid w-full grid-cols-5">
               <TabsTrigger
                 value="appearance"
                 className="flex items-center space-x-1"
@@ -144,6 +122,13 @@ const WidgetBuilder = () => {
               >
                 <Bot className="h-4 w-4" />
                 <span className="hidden sm:inline">Behavior</span>
+              </TabsTrigger>
+              <TabsTrigger
+                value="ai-config"
+                className="flex items-center space-x-1"
+              >
+                <Wand2 className="h-4 w-4" />
+                <span className="hidden sm:inline">AI Config</span>
               </TabsTrigger>
               <TabsTrigger
                 value="voice"
@@ -175,20 +160,16 @@ const WidgetBuilder = () => {
                       <Label htmlFor="name">Assistant Name</Label>
                       <Input
                         id="name"
-                        value={widgetConfig.name}
-                        onChange={(e) =>
-                          handleConfigChange("name", e.target.value)
-                        }
+                        value={config.name}
+                        onChange={(e) => updateConfig("name", e.target.value)}
                       />
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="avatar">Avatar URL</Label>
                       <Input
                         id="avatar"
-                        value={widgetConfig.avatar}
-                        onChange={(e) =>
-                          handleConfigChange("avatar", e.target.value)
-                        }
+                        value={config.avatar}
+                        onChange={(e) => updateConfig("avatar", e.target.value)}
                       />
                     </div>
                   </div>
@@ -197,9 +178,9 @@ const WidgetBuilder = () => {
                     <Label htmlFor="description">Description</Label>
                     <Textarea
                       id="description"
-                      value={widgetConfig.description}
+                      value={config.description}
                       onChange={(e) =>
-                        handleConfigChange("description", e.target.value)
+                        updateConfig("description", e.target.value)
                       }
                     />
                   </div>
@@ -211,16 +192,16 @@ const WidgetBuilder = () => {
                         <Input
                           id="primaryColor"
                           type="color"
-                          value={widgetConfig.primaryColor}
+                          value={config.primaryColor}
                           onChange={(e) =>
-                            handleConfigChange("primaryColor", e.target.value)
+                            updateConfig("primaryColor", e.target.value)
                           }
                           className="w-16 h-10"
                         />
                         <Input
-                          value={widgetConfig.primaryColor}
+                          value={config.primaryColor}
                           onChange={(e) =>
-                            handleConfigChange("primaryColor", e.target.value)
+                            updateConfig("primaryColor", e.target.value)
                           }
                           className="flex-1"
                         />
@@ -232,16 +213,16 @@ const WidgetBuilder = () => {
                         <Input
                           id="secondaryColor"
                           type="color"
-                          value={widgetConfig.secondaryColor}
+                          value={config.secondaryColor}
                           onChange={(e) =>
-                            handleConfigChange("secondaryColor", e.target.value)
+                            updateConfig("secondaryColor", e.target.value)
                           }
                           className="w-16 h-10"
                         />
                         <Input
-                          value={widgetConfig.secondaryColor}
+                          value={config.secondaryColor}
                           onChange={(e) =>
-                            handleConfigChange("secondaryColor", e.target.value)
+                            updateConfig("secondaryColor", e.target.value)
                           }
                           className="flex-1"
                         />
@@ -253,9 +234,9 @@ const WidgetBuilder = () => {
                     <div className="space-y-2">
                       <Label>Position</Label>
                       <Select
-                        value={widgetConfig.position}
+                        value={config.position}
                         onValueChange={(value) =>
-                          handleConfigChange("position", value)
+                          updateConfig("position", value)
                         }
                       >
                         <SelectTrigger>
@@ -276,10 +257,8 @@ const WidgetBuilder = () => {
                     <div className="space-y-2">
                       <Label>Size</Label>
                       <Select
-                        value={widgetConfig.size}
-                        onValueChange={(value) =>
-                          handleConfigChange("size", value)
-                        }
+                        value={config.size}
+                        onValueChange={(value) => updateConfig("size", value)}
                       >
                         <SelectTrigger>
                           <SelectValue />
@@ -296,6 +275,10 @@ const WidgetBuilder = () => {
               </Card>
             </TabsContent>
 
+            <TabsContent value="ai-config" className="space-y-4">
+              <AIProviderConfig />
+            </TabsContent>
+
             <TabsContent value="behavior" className="space-y-4">
               <Card>
                 <CardHeader>
@@ -309,9 +292,9 @@ const WidgetBuilder = () => {
                     <Label htmlFor="welcomeMessage">Welcome Message</Label>
                     <Textarea
                       id="welcomeMessage"
-                      value={widgetConfig.welcomeMessage}
+                      value={config.welcomeMessage}
                       onChange={(e) =>
-                        handleConfigChange("welcomeMessage", e.target.value)
+                        updateConfig("welcomeMessage", e.target.value)
                       }
                     />
                   </div>
@@ -319,9 +302,9 @@ const WidgetBuilder = () => {
                   <div className="space-y-2">
                     <Label>Personality</Label>
                     <Select
-                      value={widgetConfig.personality}
+                      value={config.personality}
                       onValueChange={(value) =>
-                        handleConfigChange("personality", value)
+                        updateConfig("personality", value)
                       }
                     >
                       <SelectTrigger>
@@ -341,9 +324,9 @@ const WidgetBuilder = () => {
                   <div className="space-y-2">
                     <Label>Response Delay (ms)</Label>
                     <Slider
-                      value={[widgetConfig.responseDelay]}
+                      value={[config.responseDelay]}
                       onValueChange={(value) =>
-                        handleConfigChange("responseDelay", value[0])
+                        updateConfig("responseDelay", value[0])
                       }
                       max={3000}
                       min={0}
@@ -351,7 +334,7 @@ const WidgetBuilder = () => {
                       className="w-full"
                     />
                     <div className="text-sm text-gray-500">
-                      {widgetConfig.responseDelay}ms
+                      {config.responseDelay}ms
                     </div>
                   </div>
 
@@ -359,28 +342,28 @@ const WidgetBuilder = () => {
                     <div className="flex items-center justify-between">
                       <div className="space-y-0.5">
                         <Label>Chat Interface</Label>
-                        <div className="text-sm text-gray-500">
+                        <div className="text-sm text-muted-foreground">
                           Enable text-based chat
                         </div>
                       </div>
                       <Switch
-                        checked={widgetConfig.chatEnabled}
+                        checked={config.chatEnabled}
                         onCheckedChange={(checked) =>
-                          handleConfigChange("chatEnabled", checked)
+                          updateConfig("chatEnabled", checked)
                         }
                       />
                     </div>
                     <div className="flex items-center justify-between">
                       <div className="space-y-0.5">
                         <Label>Form Guidance</Label>
-                        <div className="text-sm text-gray-500">
+                        <div className="text-sm text-muted-foreground">
                           Provide contextual form help
                         </div>
                       </div>
                       <Switch
-                        checked={widgetConfig.formGuidanceEnabled}
+                        checked={config.formGuidanceEnabled}
                         onCheckedChange={(checked) =>
-                          handleConfigChange("formGuidanceEnabled", checked)
+                          updateConfig("formGuidanceEnabled", checked)
                         }
                       />
                     </div>
@@ -389,9 +372,9 @@ const WidgetBuilder = () => {
                   <div className="space-y-2">
                     <Label>Highlight Mode</Label>
                     <Select
-                      value={widgetConfig.highlightMode}
+                      value={config.highlightMode}
                       onValueChange={(value) =>
-                        handleConfigChange("highlightMode", value)
+                        updateConfig("highlightMode", value)
                       }
                     >
                       <SelectTrigger>
@@ -420,26 +403,26 @@ const WidgetBuilder = () => {
                   <div className="flex items-center justify-between">
                     <div className="space-y-0.5">
                       <Label>Voice Interface</Label>
-                      <div className="text-sm text-gray-500">
+                      <div className="text-sm text-muted-foreground">
                         Enable voice input and output
                       </div>
                     </div>
                     <Switch
-                      checked={widgetConfig.voiceEnabled}
+                      checked={config.voiceEnabled}
                       onCheckedChange={(checked) =>
-                        handleConfigChange("voiceEnabled", checked)
+                        updateConfig("voiceEnabled", checked)
                       }
                     />
                   </div>
 
-                  {widgetConfig.voiceEnabled && (
+                  {config.voiceEnabled && (
                     <>
                       <div className="space-y-2">
                         <Label>Voice Model</Label>
                         <Select
-                          value={widgetConfig.voiceModel}
+                          value={config.voiceModel}
                           onValueChange={(value) =>
-                            handleConfigChange("voiceModel", value)
+                            updateConfig("voiceModel", value)
                           }
                         >
                           <SelectTrigger>
@@ -471,7 +454,7 @@ const WidgetBuilder = () => {
                             <Mic className="h-5 w-5 text-blue-600" />
                             <div>
                               <div className="font-medium">Speech-to-Text</div>
-                              <div className="text-sm text-gray-500">
+                              <div className="text-sm text-muted-foreground">
                                 Voice input
                               </div>
                             </div>
@@ -482,7 +465,7 @@ const WidgetBuilder = () => {
                             <Volume2 className="h-5 w-5 text-green-600" />
                             <div>
                               <div className="font-medium">Text-to-Speech</div>
-                              <div className="text-sm text-gray-500">
+                              <div className="text-sm text-muted-foreground">
                                 Voice output
                               </div>
                             </div>
@@ -506,28 +489,13 @@ const WidgetBuilder = () => {
                 <CardContent className="space-y-4">
                   <div className="space-y-2">
                     <Label>Primary Language</Label>
-                    <Select
-                      value={widgetConfig.language}
-                      onValueChange={(value) =>
-                        handleConfigChange("language", value)
+                    <LanguageSelector
+                      selectedLanguage={config.language}
+                      onLanguageChange={(value) =>
+                        updateConfig("language", value)
                       }
-                    >
-                      <SelectTrigger>
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="en">English</SelectItem>
-                        <SelectItem value="es">Spanish</SelectItem>
-                        <SelectItem value="fr">French</SelectItem>
-                        <SelectItem value="de">German</SelectItem>
-                        <SelectItem value="it">Italian</SelectItem>
-                        <SelectItem value="pt">Portuguese</SelectItem>
-                        <SelectItem value="zh">Chinese</SelectItem>
-                        <SelectItem value="ja">Japanese</SelectItem>
-                        <SelectItem value="ko">Korean</SelectItem>
-                        <SelectItem value="ar">Arabic</SelectItem>
-                      </SelectContent>
-                    </Select>
+                      variant="select"
+                    />
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -536,7 +504,7 @@ const WidgetBuilder = () => {
                         <Languages className="h-5 w-5 text-purple-600" />
                         <div>
                           <div className="font-medium">Auto-Detection</div>
-                          <div className="text-sm text-gray-500">
+                          <div className="text-sm text-muted-foreground">
                             Detect user language
                           </div>
                         </div>
@@ -549,7 +517,7 @@ const WidgetBuilder = () => {
                           <div className="font-medium">
                             Real-time Translation
                           </div>
-                          <div className="text-sm text-gray-500">
+                          <div className="text-sm text-muted-foreground">
                             Translate responses
                           </div>
                         </div>
@@ -584,110 +552,7 @@ const WidgetBuilder = () => {
 
         {/* Live Preview */}
         <div className="space-y-6">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center space-x-2">
-                <Eye className="h-5 w-5" />
-                <span>Live Preview</span>
-              </CardTitle>
-              <CardDescription>
-                See how your widget will appear to users
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="bg-gray-50 rounded-lg p-4 min-h-[400px] relative">
-                {/* Mock Website Background */}
-                <div className="bg-white rounded shadow-sm p-4 mb-4">
-                  <div className="h-4 bg-gray-200 rounded mb-2"></div>
-                  <div className="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
-                  <div className="h-4 bg-gray-200 rounded w-1/2"></div>
-                </div>
-
-                {/* Widget Preview */}
-                <div
-                  className={`absolute ${
-                    widgetConfig.position === "bottom-right"
-                      ? "bottom-4 right-4"
-                      : widgetConfig.position === "bottom-left"
-                        ? "bottom-4 left-4"
-                        : widgetConfig.position === "top-right"
-                          ? "top-4 right-4"
-                          : "top-4 left-4"
-                  }`}
-                >
-                  <motion.div
-                    className={`bg-white rounded-full shadow-lg cursor-pointer flex items-center justify-center ${
-                      widgetConfig.size === "small"
-                        ? "w-12 h-12"
-                        : widgetConfig.size === "large"
-                          ? "w-16 h-16"
-                          : "w-14 h-14"
-                    }`}
-                    style={{ backgroundColor: widgetConfig.primaryColor }}
-                    whileHover={{ scale: 1.1 }}
-                    whileTap={{ scale: 0.9 }}
-                  >
-                    <Avatar
-                      className={
-                        widgetConfig.size === "small"
-                          ? "w-8 h-8"
-                          : widgetConfig.size === "large"
-                            ? "w-12 h-12"
-                            : "w-10 h-10"
-                      }
-                    >
-                      <AvatarImage src={widgetConfig.avatar} />
-                      <AvatarFallback>
-                        <Bot className="h-4 w-4 text-white" />
-                      </AvatarFallback>
-                    </Avatar>
-                  </motion.div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle>Configuration Summary</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-2 text-sm">
-              <div className="flex justify-between">
-                <span className="text-gray-600">Name:</span>
-                <span className="font-medium">{widgetConfig.name}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-gray-600">Position:</span>
-                <span className="font-medium capitalize">
-                  {widgetConfig.position.replace("-", " ")}
-                </span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-gray-600">Size:</span>
-                <span className="font-medium capitalize">
-                  {widgetConfig.size}
-                </span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-gray-600">Language:</span>
-                <span className="font-medium">
-                  {widgetConfig.language.toUpperCase()}
-                </span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-gray-600">Voice:</span>
-                <span className="font-medium">
-                  {widgetConfig.voiceEnabled ? "Enabled" : "Disabled"}
-                </span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-gray-600">Chat:</span>
-                <span className="font-medium">
-                  {widgetConfig.chatEnabled ? "Enabled" : "Disabled"}
-                </span>
-              </div>
-            </CardContent>
-          </Card>
+          <LivePreview />
         </div>
       </div>
     </div>

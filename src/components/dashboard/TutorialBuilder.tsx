@@ -248,12 +248,14 @@ const TutorialBuilder = () => {
   const currentStep = currentTutorial?.steps[currentStepIndex];
 
   return (
-    <div className="space-y-6 bg-white min-h-screen">
+    <div className="space-y-8 w-full">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Tutorial Builder</h1>
-          <p className="text-gray-600 mt-1">
+          <h1 className="text-3xl font-bold text-foreground">
+            Tutorial Builder
+          </h1>
+          <p className="text-muted-foreground mt-1">
             Create step-by-step interactive tutorials for your users
           </p>
         </div>
@@ -269,9 +271,9 @@ const TutorialBuilder = () => {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 xl:grid-cols-4 gap-8 w-full">
         {/* Tutorial List */}
-        <div className="lg:col-span-1 space-y-4">
+        <div className="xl:col-span-1 space-y-4">
           <Card>
             <CardHeader>
               <CardTitle className="text-lg">Tutorials</CardTitle>
@@ -291,7 +293,7 @@ const TutorialBuilder = () => {
                   <div className="flex items-center justify-between">
                     <div>
                       <div className="font-medium text-sm">{tutorial.name}</div>
-                      <div className="text-xs text-gray-500">
+                      <div className="text-xs text-muted-foreground">
                         {tutorial.steps.length} steps
                       </div>
                     </div>
@@ -308,7 +310,7 @@ const TutorialBuilder = () => {
         </div>
 
         {/* Main Content */}
-        <div className="lg:col-span-3 space-y-6">
+        <div className="xl:col-span-3 space-y-6 w-full">
           {currentTutorial ? (
             <>
               {/* Tutorial Header */}
@@ -379,13 +381,13 @@ const TutorialBuilder = () => {
                           {currentStepIndex + 1}
                         </div>
                         <div className="flex-1">
-                          <h3 className="font-medium text-purple-900">
+                          <h3 className="font-medium text-primary">
                             {currentStep.title}
                           </h3>
-                          <p className="text-sm text-purple-700">
+                          <p className="text-sm text-primary/80">
                             {currentStep.description}
                           </p>
-                          <div className="flex items-center space-x-4 mt-2 text-xs text-purple-600">
+                          <div className="flex items-center space-x-4 mt-2 text-xs text-primary/70">
                             <span className="flex items-center">
                               <Target className="h-3 w-3 mr-1" />
                               {currentStep.element}
@@ -568,10 +570,10 @@ const TutorialBuilder = () => {
                   {currentTutorial.steps.length === 0 ? (
                     <div className="text-center py-8">
                       <BookOpen className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-                      <h3 className="text-lg font-medium text-gray-900 mb-2">
+                      <h3 className="text-lg font-medium text-foreground mb-2">
                         No steps yet
                       </h3>
-                      <p className="text-gray-500 mb-4">
+                      <p className="text-muted-foreground mb-4">
                         Create your first tutorial step to get started
                       </p>
                       <Button onClick={() => setIsStepDialogOpen(true)}>
@@ -622,7 +624,7 @@ const TutorialBuilder = () => {
                                   </Button>
                                 </div>
                               </div>
-                              <p className="text-sm text-gray-600 mt-1">
+                              <p className="text-sm text-muted-foreground mt-1">
                                 {step.description}
                               </p>
                               <div className="flex items-center space-x-4 mt-2">
@@ -649,7 +651,7 @@ const TutorialBuilder = () => {
                           </div>
                           {index < currentTutorial.steps.length - 1 && (
                             <div className="flex justify-center mt-4">
-                              <ArrowRight className="h-4 w-4 text-gray-400" />
+                              <ArrowRight className="h-4 w-4 text-muted-foreground" />
                             </div>
                           )}
                         </motion.div>
@@ -663,10 +665,10 @@ const TutorialBuilder = () => {
             <Card>
               <CardContent className="text-center py-12">
                 <BookOpen className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-                <h3 className="text-lg font-medium text-gray-900 mb-2">
+                <h3 className="text-lg font-medium text-foreground mb-2">
                   Select a Tutorial
                 </h3>
-                <p className="text-gray-500">
+                <p className="text-muted-foreground">
                   Choose a tutorial from the list to start editing
                 </p>
               </CardContent>

@@ -175,12 +175,12 @@ const AssistantManager = () => {
   };
 
   return (
-    <div className="space-y-6 bg-white min-h-screen">
+    <div className="space-y-8 w-full">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">AI Assistants</h1>
-          <p className="text-gray-600 mt-1">
+          <h1 className="text-3xl font-bold text-foreground">AI Assistants</h1>
+          <p className="text-muted-foreground mt-1">
             Manage your AI assistants and their configurations
           </p>
         </div>
@@ -256,7 +256,7 @@ const AssistantManager = () => {
       </div>
 
       {/* Search and Filters */}
-      <div className="flex flex-col sm:flex-row gap-4">
+      <div className="flex flex-col sm:flex-row gap-4 w-full">
         <div className="relative flex-1">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
           <Input
@@ -273,16 +273,16 @@ const AssistantManager = () => {
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 w-full">
         <Card>
           <CardContent className="p-6">
             <div className="flex items-center">
               <Bot className="h-8 w-8 text-purple-600" />
               <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">
+                <p className="text-sm font-medium text-muted-foreground">
                   Total Assistants
                 </p>
-                <p className="text-2xl font-bold text-gray-900">
+                <p className="text-2xl font-bold text-foreground">
                   {assistants.length}
                 </p>
               </div>
@@ -294,10 +294,10 @@ const AssistantManager = () => {
             <div className="flex items-center">
               <MessageSquare className="h-8 w-8 text-blue-600" />
               <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">
+                <p className="text-sm font-medium text-muted-foreground">
                   Total Interactions
                 </p>
-                <p className="text-2xl font-bold text-gray-900">
+                <p className="text-2xl font-bold text-foreground">
                   {assistants.reduce((sum, a) => sum + a.interactions, 0)}
                 </p>
               </div>
@@ -309,10 +309,10 @@ const AssistantManager = () => {
             <div className="flex items-center">
               <Users className="h-8 w-8 text-green-600" />
               <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">
+                <p className="text-sm font-medium text-muted-foreground">
                   Active Assistants
                 </p>
-                <p className="text-2xl font-bold text-gray-900">
+                <p className="text-2xl font-bold text-foreground">
                   {assistants.filter((a) => a.status === "active").length}
                 </p>
               </div>
@@ -324,8 +324,10 @@ const AssistantManager = () => {
             <div className="flex items-center">
               <Globe className="h-8 w-8 text-orange-600" />
               <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">Languages</p>
-                <p className="text-2xl font-bold text-gray-900">12</p>
+                <p className="text-sm font-medium text-muted-foreground">
+                  Languages
+                </p>
+                <p className="text-2xl font-bold text-foreground">12</p>
               </div>
             </div>
           </CardContent>
@@ -333,7 +335,7 @@ const AssistantManager = () => {
       </div>
 
       {/* Assistants Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6 w-full">
         {filteredAssistants.map((assistant) => (
           <motion.div
             key={assistant.id}
@@ -359,7 +361,7 @@ const AssistantManager = () => {
                         <Badge className={getStatusColor(assistant.status)}>
                           {assistant.status}
                         </Badge>
-                        <span className="text-sm text-gray-500">
+                        <span className="text-sm text-muted-foreground">
                           {assistant.language}
                         </span>
                       </div>
@@ -402,7 +404,7 @@ const AssistantManager = () => {
                 <CardDescription className="mb-4">
                   {assistant.description}
                 </CardDescription>
-                <div className="flex items-center justify-between text-sm text-gray-500">
+                <div className="flex items-center justify-between text-sm text-muted-foreground">
                   <div className="flex items-center space-x-4">
                     <span className="flex items-center">
                       <MessageSquare className="h-4 w-4 mr-1" />
@@ -423,10 +425,10 @@ const AssistantManager = () => {
       {filteredAssistants.length === 0 && (
         <div className="text-center py-12">
           <Bot className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-          <h3 className="text-lg font-medium text-gray-900 mb-2">
+          <h3 className="text-lg font-medium text-foreground mb-2">
             No assistants found
           </h3>
-          <p className="text-gray-500 mb-4">
+          <p className="text-muted-foreground mb-4">
             {searchQuery
               ? "Try adjusting your search terms"
               : "Create your first AI assistant to get started"}

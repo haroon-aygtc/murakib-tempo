@@ -256,12 +256,14 @@ const LanguageManager = () => {
   };
 
   return (
-    <div className="space-y-6 bg-white min-h-screen">
+    <div className="space-y-8 w-full">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Language Manager</h1>
-          <p className="text-gray-600 mt-1">
+          <h1 className="text-3xl font-bold text-foreground">
+            Language Manager
+          </h1>
+          <p className="text-muted-foreground mt-1">
             Manage languages, translations, and voice models for your AI
             assistant
           </p>
@@ -362,7 +364,7 @@ const LanguageManager = () => {
       </div>
 
       {/* Search and Filters */}
-      <div className="flex flex-col sm:flex-row gap-4">
+      <div className="flex flex-col sm:flex-row gap-4 w-full">
         <div className="relative flex-1">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
           <Input
@@ -379,16 +381,16 @@ const LanguageManager = () => {
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 w-full">
         <Card>
           <CardContent className="p-6">
             <div className="flex items-center">
               <Globe className="h-8 w-8 text-blue-600" />
               <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">
+                <p className="text-sm font-medium text-muted-foreground">
                   Total Languages
                 </p>
-                <p className="text-2xl font-bold text-gray-900">
+                <p className="text-2xl font-bold text-foreground">
                   {languages.length}
                 </p>
               </div>
@@ -400,10 +402,10 @@ const LanguageManager = () => {
             <div className="flex items-center">
               <CheckCircle className="h-8 w-8 text-green-600" />
               <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">
+                <p className="text-sm font-medium text-muted-foreground">
                   Active Languages
                 </p>
-                <p className="text-2xl font-bold text-gray-900">
+                <p className="text-2xl font-bold text-foreground">
                   {languages.filter((l) => l.isActive).length}
                 </p>
               </div>
@@ -415,10 +417,10 @@ const LanguageManager = () => {
             <div className="flex items-center">
               <FileText className="h-8 w-8 text-purple-600" />
               <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">
+                <p className="text-sm font-medium text-muted-foreground">
                   Translation Keys
                 </p>
-                <p className="text-2xl font-bold text-gray-900">
+                <p className="text-2xl font-bold text-foreground">
                   {translations.length}
                 </p>
               </div>
@@ -430,10 +432,10 @@ const LanguageManager = () => {
             <div className="flex items-center">
               <Volume2 className="h-8 w-8 text-orange-600" />
               <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">
+                <p className="text-sm font-medium text-muted-foreground">
                   Voice Models
                 </p>
-                <p className="text-2xl font-bold text-gray-900">
+                <p className="text-2xl font-bold text-foreground">
                   {voiceModels.length}
                 </p>
               </div>
@@ -467,7 +469,7 @@ const LanguageManager = () => {
 
         <TabsContent value="languages" className="space-y-4">
           {/* Languages Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
             {filteredLanguages.map((language) => (
               <motion.div
                 key={language.id}
@@ -488,7 +490,7 @@ const LanguageManager = () => {
                           <CardTitle className="text-lg">
                             {language.name}
                           </CardTitle>
-                          <p className="text-sm text-gray-500">
+                          <p className="text-sm text-muted-foreground">
                             {language.nativeName}
                           </p>
                         </div>
@@ -536,7 +538,9 @@ const LanguageManager = () => {
                       </div>
                       <div>
                         <div className="flex justify-between text-sm mb-1">
-                          <span className="text-gray-600">Completion:</span>
+                          <span className="text-muted-foreground">
+                            Completion:
+                          </span>
                           <span
                             className={`font-medium ${getCompletionColor(
                               language.completionRate,
@@ -552,7 +556,9 @@ const LanguageManager = () => {
                       </div>
                       {language.voiceModel && (
                         <div className="flex items-center justify-between">
-                          <span className="text-sm text-gray-600">Voice:</span>
+                          <span className="text-sm text-muted-foreground">
+                            Voice:
+                          </span>
                           <span className="text-sm font-medium">
                             {voiceModels
                               .find((v) => v.value === language.voiceModel)
@@ -561,7 +567,9 @@ const LanguageManager = () => {
                         </div>
                       )}
                       <div className="flex items-center justify-between">
-                        <span className="text-sm text-gray-600">Updated:</span>
+                        <span className="text-sm text-muted-foreground">
+                          Updated:
+                        </span>
                         <span className="text-sm font-medium">
                           {language.lastUpdated}
                         </span>
@@ -600,13 +608,15 @@ const LanguageManager = () => {
                     </div>
                     <div className="space-y-2">
                       <div>
-                        <Label className="text-xs text-gray-500">English</Label>
+                        <Label className="text-xs text-muted-foreground">
+                          English
+                        </Label>
                         <p className="text-sm">{translation.english}</p>
                       </div>
                       {Object.entries(translation.translations).map(
                         ([langCode, text]) => (
                           <div key={langCode}>
-                            <Label className="text-xs text-gray-500">
+                            <Label className="text-xs text-muted-foreground">
                               {languages.find((l) => l.code === langCode)
                                 ?.name || langCode}
                             </Label>
@@ -638,7 +648,7 @@ const LanguageManager = () => {
                       <h4 className="font-medium">{model.label}</h4>
                       <Volume2 className="h-5 w-5 text-blue-600" />
                     </div>
-                    <p className="text-sm text-gray-600 mb-3">
+                    <p className="text-sm text-muted-foreground mb-3">
                       Used by{" "}
                       {
                         languages.filter((l) => l.voiceModel === model.value)

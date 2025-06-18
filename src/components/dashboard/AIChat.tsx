@@ -183,12 +183,12 @@ const AIChat = () => {
   };
 
   return (
-    <div className="space-y-6 bg-white min-h-screen">
+    <div className="space-y-8 w-full">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">AI Chat</h1>
-          <p className="text-gray-600 mt-1">
+          <h1 className="text-3xl font-bold text-foreground">AI Chat</h1>
+          <p className="text-muted-foreground mt-1">
             Chat with your AI assistant to test responses and behavior
           </p>
         </div>
@@ -209,9 +209,9 @@ const AIChat = () => {
       </div>
 
       {/* Chat Interface */}
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 xl:grid-cols-4 gap-8 w-full">
         {/* Main Chat */}
-        <div className="lg:col-span-3">
+        <div className="xl:col-span-3 w-full">
           <Card className="h-[600px] flex flex-col">
             <CardHeader className="pb-3">
               <div className="flex items-center justify-between">
@@ -292,13 +292,13 @@ const AIChat = () => {
                             className={`rounded-lg px-4 py-2 ${
                               message.sender === "user"
                                 ? "bg-gradient-to-r from-purple-600 to-blue-600 text-white"
-                                : "bg-gray-100 text-gray-900"
+                                : "bg-muted text-foreground"
                             }`}
                           >
                             <p className="text-sm">{message.content}</p>
                           </div>
                           <div className="flex items-center justify-between mt-1">
-                            <span className="text-xs text-gray-500">
+                            <span className="text-xs text-muted-foreground">
                               {message.timestamp.toLocaleTimeString()}
                             </span>
                             <div className="flex items-center space-x-1">
@@ -348,15 +348,15 @@ const AIChat = () => {
                           <Bot className="h-4 w-4" />
                         </AvatarFallback>
                       </Avatar>
-                      <div className="bg-gray-100 rounded-lg px-4 py-2">
+                      <div className="bg-muted rounded-lg px-4 py-2">
                         <div className="flex space-x-1">
-                          <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" />
+                          <div className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce" />
                           <div
-                            className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
+                            className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce"
                             style={{ animationDelay: "0.1s" }}
                           />
                           <div
-                            className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
+                            className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce"
                             style={{ animationDelay: "0.2s" }}
                           />
                         </div>
@@ -388,7 +388,7 @@ const AIChat = () => {
                       {isRecording ? (
                         <MicOff className="h-4 w-4 text-red-600" />
                       ) : (
-                        <Mic className="h-4 w-4 text-gray-400" />
+                        <Mic className="h-4 w-4 text-muted-foreground" />
                       )}
                     </Button>
                   </div>

@@ -84,14 +84,14 @@ const AssistantPreview = () => {
   };
 
   return (
-    <div className="space-y-6 bg-white min-h-screen">
+    <div className="space-y-8 w-full">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">
+          <h1 className="text-3xl font-bold text-foreground">
             Assistant Preview
           </h1>
-          <p className="text-gray-600 mt-1">
+          <p className="text-muted-foreground mt-1">
             Test and preview your AI assistants in real-time
           </p>
         </div>
@@ -249,13 +249,13 @@ const AssistantPreview = () => {
                   transition={{ duration: 0.3 }}
                 >
                   {/* Mock Browser Header */}
-                  <div className="bg-gray-100 px-4 py-2 flex items-center space-x-2 border-b">
+                  <div className="bg-muted px-4 py-2 flex items-center space-x-2 border-b">
                     <div className="flex space-x-1">
                       <div className="w-3 h-3 bg-red-400 rounded-full"></div>
                       <div className="w-3 h-3 bg-yellow-400 rounded-full"></div>
                       <div className="w-3 h-3 bg-green-400 rounded-full"></div>
                     </div>
-                    <div className="flex-1 bg-white rounded px-3 py-1 text-sm text-gray-600">
+                    <div className="flex-1 bg-background rounded px-3 py-1 text-sm text-muted-foreground">
                       https://example.com/demo
                     </div>
                   </div>
@@ -271,12 +271,14 @@ const AssistantPreview = () => {
           </Card>
 
           {/* Preview Stats */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full">
             <Card>
               <CardContent className="p-4">
                 <div className="text-center">
                   <div className="text-2xl font-bold text-green-600">98%</div>
-                  <div className="text-sm text-gray-600">Response Rate</div>
+                  <div className="text-sm text-muted-foreground">
+                    Response Rate
+                  </div>
                 </div>
               </CardContent>
             </Card>
@@ -284,7 +286,9 @@ const AssistantPreview = () => {
               <CardContent className="p-4">
                 <div className="text-center">
                   <div className="text-2xl font-bold text-blue-600">1.2s</div>
-                  <div className="text-sm text-gray-600">Avg Response Time</div>
+                  <div className="text-sm text-muted-foreground">
+                    Avg Response Time
+                  </div>
                 </div>
               </CardContent>
             </Card>
@@ -294,7 +298,9 @@ const AssistantPreview = () => {
                   <div className="text-2xl font-bold text-purple-600">
                     4.8/5
                   </div>
-                  <div className="text-sm text-gray-600">User Satisfaction</div>
+                  <div className="text-sm text-muted-foreground">
+                    User Satisfaction
+                  </div>
                 </div>
               </CardContent>
             </Card>
@@ -312,7 +318,7 @@ const AssistantPreview = () => {
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                <div className="bg-gray-900 text-gray-100 p-4 rounded-lg font-mono text-sm overflow-x-auto">
+                <div className="bg-muted text-foreground p-4 rounded-lg font-mono text-sm overflow-x-auto">
                   <pre>{`<!-- Murakib AI Assistant Widget -->
 <script src="https://cdn.murakib.com/widget.js"></script>
 <script>
